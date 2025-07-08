@@ -2,6 +2,7 @@
 
 import { saveMeal } from "./meals";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 function isInvalid(text) {
   return text?.trim() === "";
@@ -32,5 +33,9 @@ export async function shareMeal(prevState, formData) {
   }
 
   await saveMeal(meal);
+
+  revalidatePath("/meals");
+  // revalidatePath("/meals", "layout"); // to validate all the nested pages
+
   redirect("/meals");
 }
